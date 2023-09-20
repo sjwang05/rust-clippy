@@ -142,7 +142,7 @@ impl<'tcx> LateLintPass<'tcx> for AmbiguousMethodCalls {
                     .all_local_trait_impls(())
                     .get(&cx.tcx.all_traits().next().unwrap())
                 {
-                    for block in impl_blocks.iter() {
+                    for block in impl_blocks {
                         if let Some(hir::Node::Item(item)) =
                             cx.tcx.hir().find(cx.tcx.hir().local_def_id_to_hir_id(*block))
                         {
