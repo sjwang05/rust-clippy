@@ -116,7 +116,7 @@ impl<'tcx> LateLintPass<'tcx> for AmbiguousMethodCalls {
         kind: FnKind<'tcx>,
         _: &'tcx FnDecl<'_>,
         _: &'tcx Body<'_>,
-        _: Span,
+        span: Span,
         def_id: LocalDefId,
     ) {
         if let FnKind::Method(ident, _) = kind {
@@ -133,6 +133,29 @@ impl<'tcx> LateLintPass<'tcx> for AmbiguousMethodCalls {
 
             let parent_ty = cx.tcx.type_of(parent_id.to_def_id()).skip_binder();
             self.insert_method(is_trait_impl, parent_ty, ident);
+
+            // TESTING
+            let is_inherent_impl = !is_trait_impl_item(cx, hir_id);
+            if is_inherent_impl {
+                if let Some(impl_blocks) = cx.tcx.all_local_trait_impls(()).get(&cx.tcx.all_traits().next().unwrap()) {
+                    for block in impl_blocks.iter() {
+                        if let Some(hir::Node::Item(item)) = cx.tcx.hir().find(cx.tcx.hir().local_def_id_to_hir_id(*block)) {
+                            if let hir::ItemKind::Impl(impl_struct) = item.kind {
+                                for item in impl_struct.items {
+                                    let trait_method_hir_id = cx.tcx.hir().local_def_id_to_hir_id(item.id.owner_id.def_id);
+                                    let t_m_parent_id = cx.tcx.hir().get_parent_item(trait_method_hir_id);
+                                    let t_m_parent_ty = cx.tcx.type_of(t_m_parent_id.to_def_id()).skip_binder();
+                                    if item.ident.name == ident.name && parent_ty == t_m_parent_ty {
+                                        span_lint(cx, AMBIGUOUS_METHOD_CALLS, item.span, "trait impl");
+                                        span_lint(cx, AMBIGUOUS_METHOD_CALLS, span, "struct impl");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // END TESTING
         }
     }
 
