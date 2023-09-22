@@ -1,0 +1,79 @@
+error: `if` expr in `if` condition
+  --> $DIR/ifs_in_if_conditions.rs:38:8
+   |
+LL |     if if a == 13 { 10 } else { 0 } > 5 {
+   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider assigning the result of the `if` to a variable and using the variable in the condition instead
+   = note: `-D clippy::ifs-in-if-conditions` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::ifs_in_if_conditions)]`
+
+error: `if` expr in `if` condition
+  --> $DIR/ifs_in_if_conditions.rs:40:15
+   |
+LL |       } else if if a == 12 {
+   |  _______________^
+LL | |         -10
+LL | |     } else if if a == 13 { 10 } else { 0 } > 5 {
+LL | |         0
+LL | |     } else {
+LL | |         1
+LL | |     } < -5
+   | |_____^
+   |
+   = help: consider assigning the result of the `if` to a variable and using the variable in the condition instead
+
+error: `if` expr in `if` condition
+  --> $DIR/ifs_in_if_conditions.rs:42:15
+   |
+LL |     } else if if a == 13 { 10 } else { 0 } > 5 {
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider assigning the result of the `if` to a variable and using the variable in the condition instead
+
+error: `if` expr in `if` condition
+  --> $DIR/ifs_in_if_conditions.rs:51:8
+   |
+LL |       if if if if if a == 13 { 12 } else { 13 } == 12 { 11 } else { 13 } == 11 {
+   |  ________^
+LL | |         10
+LL | |     } else {
+LL | |         13
+...  |
+LL | |         13
+LL | |     } == 9
+   | |_____^
+   |
+   = help: consider assigning the result of the `if` to a variable and using the variable in the condition instead
+
+error: `if` expr in `if` condition
+  --> $DIR/ifs_in_if_conditions.rs:51:11
+   |
+LL |       if if if if if a == 13 { 12 } else { 13 } == 12 { 11 } else { 13 } == 11 {
+   |  ___________^
+LL | |         10
+LL | |     } else {
+LL | |         13
+LL | |     } == 10
+   | |_____^
+   |
+   = help: consider assigning the result of the `if` to a variable and using the variable in the condition instead
+
+error: `if` expr in `if` condition
+  --> $DIR/ifs_in_if_conditions.rs:51:14
+   |
+LL |     if if if if if a == 13 { 12 } else { 13 } == 12 { 11 } else { 13 } == 11 {
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider assigning the result of the `if` to a variable and using the variable in the condition instead
+
+error: `if` expr in `if` condition
+  --> $DIR/ifs_in_if_conditions.rs:51:17
+   |
+LL |     if if if if if a == 13 { 12 } else { 13 } == 12 { 11 } else { 13 } == 11 {
+   |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider assigning the result of the `if` to a variable and using the variable in the condition instead
+
+error: aborting due to 7 previous errors
+
